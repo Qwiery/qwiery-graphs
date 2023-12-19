@@ -4,6 +4,7 @@ import { faker } from "@faker-js/faker";
 
 import {JsonGraph} from "./jsonGraph";
 import {Constants} from "../constants";
+import {Nullable} from "vitest";
 
 /*
  * Part of pseudo-cypher, this represents a single node `(name:typeName{data})`.
@@ -23,28 +24,9 @@ import {Constants} from "../constants";
  * node.toCypher() // (a:car{u: 34})
  * */
 export class PseudoCypherNode {
-	/**
-	 * The name of the node.
-	 * @type {string|null}
-	 */
-	name;
 
-	/**
-	 * The type of the node.
-	 * @type {string|null}
-	 */
-	type;
+	constructor(public name:Nullable<string> = null, public typeName:Nullable<string> = null,public data:any = null) {
 
-	/**
-	 * The payload of the node.
-	 * @type {*|null}
-	 */
-	data;
-
-	constructor(name = null, typeName = null, data = null) {
-		this.name = name;
-		this.typeName = typeName;
-		this.data = data;
 	}
 
 	/**
@@ -147,7 +129,7 @@ export class PseudoCypherNode {
 	 * @returns {*}
 	 */
 	toEntity() {
-		let d = {};
+		let d:any = {};
 		if (!Utils.isEmpty(this.data)) {
 			d = _.assign(d, this.data);
 		}

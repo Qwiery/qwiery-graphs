@@ -9,7 +9,7 @@ import {ArrowGraph} from "./formats/arrowGraph";
 
 import {MatrixMarket} from "./formats/matrixMarket";
 
-import {NamedGraph} from "../src/graphData/namedGraph";
+import {NamedGraph} from "~/graphData/namedGraph";
 
 import {RandomGraph} from "./graphData/randomGraph";
 import {JsonGraph} from "./formats/jsonGraph";
@@ -55,7 +55,7 @@ export   class Graph {
 	 * Instantiates a new Graph.
 	 * @param data {any} The given data is simply assigned to the instance, no checks performed.
 	 */
-	constructor(data = null) {
+	constructor(data:any = null) {
 		this.id = Utils.id();
 		this.#edges = [];
 		this.#nodes = [];
