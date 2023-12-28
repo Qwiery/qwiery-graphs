@@ -361,7 +361,7 @@ export class PseudoCypherTriple {
 	/**
 	 * Turns the given edge-entity into Cypher.
 	 * The entity needs at least a `sourceId` and `targetId` to be considered as an edge.
-	 * @param entity {*|IEdgeBase} An edge entity.
+	 * @param entity {*|IQwieryEdge} An edge entity.
 	 * @param sourceName
 	 * @param targetName
 	 * @param edgeName

@@ -1,6 +1,5 @@
 import _ from "lodash";
-import {INodeBase} from "./iNodeBase";
-import { Utils,Strings } from "@orbifold/utils";
+import { Utils,Strings, IQwieryNode, IQwieryEdge } from "@orbifold/utils";
 import {Forest} from "./forest";
 import {GraphUtils} from "./graphUtils";
 import { PseudoCypher } from "./formats/pseudoCypher";
@@ -91,7 +90,7 @@ export   class Graph {
 	 * Returns a copy of the edges in this graph.
 	 * The clone means that the node data cannot be altered by accessing them in this way.
 	 * This ensures integrity since otherwise e.g. sourceId of the edges could be changed and break the graph.
-	 * @return {IEdgeBase[]}
+	 * @return {IQwieryEdge[]}
 	 */
 	get edges() {
 		return _.clone(this.#edges);
@@ -101,7 +100,7 @@ export   class Graph {
 	 * Returns a copy of the nodes in this graph.
 	 * The clone means that the node data cannot be altered by accessing them in this way.
 	 * This ensures integrity since otherwise e.g. id of the node could be changed and break the graph.
-	 * @return {INodeBase[]}
+	 * @return {IQwieryNode[]}
 	 */
 	get nodes() {
 		return _.clone(this.#nodes);
@@ -332,7 +331,7 @@ export   class Graph {
 	/**
 	 * Merges the given graph into this one.
 	 * @param g
-	 * @return {this<INodeBase, GroupBase, EdgeBase>}
+	 * @return {this<IQwieryNode, GroupBase, EdgeBase>}
 	 */
 	mergeGraph(g) {
 		if (_.isNil(g)) {
@@ -374,7 +373,7 @@ export   class Graph {
 	/**
 	 * Returns the flow starting at the specified node id.
 	 * A flow is a full-length path to a leaf node.
-	 * @param start {string|INodeBase} A node or node id part of this graph.
+	 * @param start {string|IQwieryNode} A node or node id part of this graph.
 	 * @return The collection of paths.
 	 */
 	getFlows(start) {
@@ -557,7 +556,7 @@ export   class Graph {
 	/**
 	 * An extension of {@link getNodeByName} for a string of names.
 	 * @param names {string[]} Node names.
-	 * @return {INodeBase[]}
+	 * @return {IQwieryNode[]}
 	 */
 	getNodesByName(names) {
 		return names.map((n) => this.getNodeByName(n));
@@ -582,7 +581,7 @@ export   class Graph {
 	/**
 	 * Returns the edge with the specified node id as source.
 	 * @param id {string} An id.
-	 * @return {IEdgeBase[]}
+	 * @return {IQwieryEdge[]}
 	 */
 	getOutgoingEdges(id) {
 		return this.#edges.filter((e) => e.sourceId === id);
@@ -591,7 +590,7 @@ export   class Graph {
 	/**
 	 * Returns the edge with the specified node id as target.
 	 * @param id {string} An id.
-	 * @return {IEdgeBase[]}
+	 * @return {IQwieryEdge[]}
 	 */
 	getIncomingEdges(id) {
 		return this.#edges.filter((e) => e.targetId === id);
@@ -712,7 +711,7 @@ export   class Graph {
 
 	/**
 	 * Adds a node to the graph.
-	 * @param nodeSpec {any} A INodeBase instance or some data which can be converted to it.
+	 * @param nodeSpec {any} A IQwieryNode instance or some data which can be converted to it.
 	 */
 	addNode(...nodeSpec) {
 		const node = GraphUtils.getNodeFromSpecs(...nodeSpec);
@@ -830,7 +829,7 @@ export   class Graph {
 				throw new Error("Cannot remove a node from the graph from something without an id.");
 			}
 			return this.#removeNode(dataOrNode);
-		} else if (dataOrNode instanceof INodeBase) {
+		} else if (dataOrNode instanceof IQwieryNode) {
 			return this.#removeNode(dataOrNode);
 		} else {
 			throw new Error("Don't know how to remove a node from the given object.");
@@ -882,8 +881,8 @@ export   class Graph {
 
 	/**
 	 * Depth-first traversal starting at the specified node.
-	 * @param visitor {(n: INodeBase, level: number,path:INodeBase[], hasChildren:boolean)=> void} A visiting function.
-	 * @param startNode {INodeBase} The node to start the traversal from.
+	 * @param visitor {(n: IQwieryNode, level: number,path:IQwieryNode[], hasChildren:boolean)=> void} A visiting function.
+	 * @param startNode {IQwieryNode} The node to start the traversal from.
 	 */
 	dft(visitor, startNode) {
 		if (_.isNil(startNode)) {
@@ -913,11 +912,11 @@ export   class Graph {
 
 	/**
 	 * Recursive DFT used by {@link dft}.
-	 * @param node {INodeBase} The start of the DFT.
+	 * @param node {IQwieryNode} The start of the DFT.
 	 * @param visitor The visitor function.
 	 * @param visitedIds {string[]} The id's already visited in order to prevent loops.
 	 * @param level {number} The current depth.
-	 * @param currentPath {INodeBase[]} The sequence of nodes used to reach the current node.
+	 * @param currentPath {IQwieryNode[]} The sequence of nodes used to reach the current node.
 	 */
 	#dftTraverse(node, visitor, visitedIds, level = 0, currentPath = []) {
 		if (_.includes(visitedIds, node.id)) {

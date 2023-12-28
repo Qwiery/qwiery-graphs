@@ -19,7 +19,7 @@
     "node": ">=21"
   },
   "private": false,
-  "version": "4.0.3",
+  "version": "4.0.4",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -47,6 +47,6 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "@faker-js/faker": "^8.0.2",
-    "@orbifold/utils": "^4.0.0"
+    "@orbifold/utils": "^4.1.0"
   }
 }
